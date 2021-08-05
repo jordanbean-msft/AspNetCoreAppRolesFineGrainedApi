@@ -1,0 +1,17 @@
+{
+  "appName": {
+    "value": "webAppWithAppRolesAndFineGrained"
+  },
+  "region": {
+    "value": "ussc"
+  },
+  "environment": {
+    "value": "demo"
+  },
+  "sqlAADAdminName": {
+    "value": ""
+  },
+  "sqlAADAdminObjectId": {
+    "value": ""
+  }
+}
