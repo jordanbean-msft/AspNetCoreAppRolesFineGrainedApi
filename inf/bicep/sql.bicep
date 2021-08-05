@@ -31,3 +31,4 @@ resource sql 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
 
 output sqlServerName string = sqlServer.name
 output sqlDatabaseName string = sql.name
+output sqlDatabaseConnectionString string = 'Server=tcp:${reference(sqlServer.id).fullyQualifiedDomainName};Initial Catalog=${sql.name};Authentication=Active Directory Managed Identity;'
