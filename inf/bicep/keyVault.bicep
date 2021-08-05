@@ -10,7 +10,7 @@ resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIden
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
-  name: 'kv-${longName}'
+  name: 'kv-${substring(longName, 0, 21)}'
   location: resourceGroup().location 
   properties: {
     sku: {

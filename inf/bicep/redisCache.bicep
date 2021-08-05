@@ -14,4 +14,4 @@ resource redisCache 'Microsoft.Cache/Redis@2019-07-01' = {
 }
 
 output redisCacheName string = redisCache.name
-output redisCacheConnectionString string = '${reference(redisCache.id).fullyQualifiedDomainName}:6380;password=${redisCache.properties.accessKeys.primaryKey}'
+output redisCacheConnectionString string = '${redisCache.name}.redis.cache.windows.net:6380;password=${redisCache.properties.accessKeys.primaryKey}'
