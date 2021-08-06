@@ -13,7 +13,8 @@ namespace web_app.Migrations
                     BranchID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    AADGroupID = table.Column<string>(type: "TEXT", nullable: true)
+                    RegionalManagerAADGroupId = table.Column<string>(type: "TEXT", nullable: true),
+                    SalespersonAADGroupId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

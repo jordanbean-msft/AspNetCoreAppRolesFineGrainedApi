@@ -38,7 +38,7 @@ namespace web_app.Controllers
               var aadGroupIds = User.Claims.Where(x => x.Type == "groups").Select(x => x.Value).ToList<string>();
 
               salaries = await _context.Salaries.Include(salary => salary.Employee)
-                                                .Where(salary => aadGroupIds.Contains(salary.Employee.Branch.AADGroupID))
+                                                .Where(salary => aadGroupIds.Contains(salary.Employee.Branch.RegionalManagerAADGroupId))
                                                 .ToListAsync();
             } else if (User.IsInRole(AppRoles.SALESPERSON_READWRITE)) {
               string upn = User.Claims.FirstOrDefault(x => x.Type == "upn").Value;
@@ -69,7 +69,7 @@ namespace web_app.Controllers
               var aadGroupIds = User.Claims.Where(x => x.Type == "groups").Select(x => x.Value).ToList<string>();
 
               salary = await _context.Salaries.Include(salary => salary.Employee)
-                                                .Where(salary => aadGroupIds.Contains(salary.Employee.Branch.AADGroupID))
+                                                .Where(salary => aadGroupIds.Contains(salary.Employee.Branch.RegionalManagerAADGroupId))
                                                 
                 .FirstOrDefaultAsync(m => m.SalaryID == id);
             } else if (User.IsInRole(AppRoles.SALESPERSON_READWRITE)) {

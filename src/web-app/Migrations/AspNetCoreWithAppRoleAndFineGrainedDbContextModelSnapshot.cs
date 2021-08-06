@@ -21,10 +21,13 @@ namespace web_app.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AADGroupID")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("RegionalManagerAADGroupId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SalespersonAADGroupId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("BranchID");

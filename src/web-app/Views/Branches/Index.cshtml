@@ -16,7 +16,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AADGroupID)
+                @Html.DisplayNameFor(model => model.RegionalManagerAADGroupId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalespersonAADGroupId)
             </th>
             <th></th>
         </tr>
@@ -28,7 +31,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AADGroupID)
+                @Html.DisplayFor(modelItem => item.RegionalManagerAADGroupId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalespersonAADGroupId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BranchID">Edit</a> |

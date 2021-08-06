@@ -7,7 +7,8 @@ namespace AspNetCoreWithAppRoleAndFineGrained.Models {
 
     public string Name { get; set; }
 
-    public string AADGroupID { get; set; }
+    public string RegionalManagerAADGroupId { get; set; }
+    public string SalespersonAADGroupId { get; set; }
 
     public virtual List<Employee> Employees { get; set; }
   }
