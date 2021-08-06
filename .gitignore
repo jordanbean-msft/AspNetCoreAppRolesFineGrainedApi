@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 
 *.db
+src/web-app/appsettings.json
