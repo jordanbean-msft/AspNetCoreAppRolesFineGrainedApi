@@ -28,7 +28,8 @@ namespace web_app.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BranchID = table.Column<int>(type: "INTEGER", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: true)
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserPrincipalName = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

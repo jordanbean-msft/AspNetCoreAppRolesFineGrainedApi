@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace web_app.Migrations
 {
     [DbContext(typeof(AspNetCoreWithAppRoleAndFineGrainedDbContext))]
-    [Migration("20210806135850_InitialCreate")]
+    [Migration("20210806171812_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace web_app.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserPrincipalName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("EmployeeID");

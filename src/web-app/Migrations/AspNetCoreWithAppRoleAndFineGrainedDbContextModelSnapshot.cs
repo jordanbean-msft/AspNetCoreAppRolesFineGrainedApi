@@ -47,6 +47,9 @@ namespace web_app.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserPrincipalName")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("EmployeeID");
 
                     b.HasIndex("BranchID");

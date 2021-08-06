@@ -10,6 +10,8 @@ namespace AspNetCoreWithAppRoleAndFineGrained.Models {
 
     public string FirstName { get; set; }
 
+    public string UserPrincipalName { get; set; }
+
     public virtual ICollection<Sale> Sales { get; set; }
 
     public virtual Salary Salary { get; set; }
