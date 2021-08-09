@@ -71,10 +71,6 @@ namespace AspNetCoreWithAppRoleAndFineGrained
         }
       });
 
-      // services.AddDefaultIdentity<IdentityUser>()
-      //   .AddRoles<IdentityUser>()
-      //   .AddEntityFrameworkStores<AspNetCoreWithAppRoleAndFineGrainedDbContext>();
-
       services.AddDatabaseDeveloperPageExceptionFilter();
 
       services.AddControllersWithViews(options =>
@@ -90,7 +86,7 @@ namespace AspNetCoreWithAppRoleAndFineGrained
 
        services.AddAuthorization(options =>
        {
-         options.AddPolicy(Policies.General, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE, AppRoles.SALESPERSON_READWRITE));
+         options.AddPolicy(Policies.General, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE, AppRoles.SALESPERSON_READWRITE, AppRoles.GENERAL_READWRITE));
          options.AddPolicy(Policies.Management, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE));
          options.AddPolicy(Policies.Salesperson, policy => policy.RequireRole(AppRoles.SALESPERSON_READWRITE));
        });
