@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>web_app</RootNamespace>
+    <RootNamespace>AspNetCoreWithAppRolesAndFineGrained</RootNamespace>
     <UserSecretsId>f78c4efd-100f-4bdb-bfa4-d30925be56e9</UserSecretsId>
   </PropertyGroup>
 

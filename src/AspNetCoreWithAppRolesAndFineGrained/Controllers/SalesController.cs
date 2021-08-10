@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreWithAppRolesAndFineGrained.Data;
 using AspNetCoreWithAppRolesAndFineGrained.Models;
 
-namespace web_app.Controllers
+namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
 {
-    public class EmployeesController : Controller
+    public class SalesController : Controller
     {
         private readonly AspNetCoreWithAppRolesAndFineGrainedDbContext _context;
 
-        public EmployeesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
+        public SalesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
         {
             _context = context;
         }
 
-        // GET: Employees
+        // GET: Sales
         public async Task<IActionResult> Index()
         {
-            var employees = _context.Employees.Include(e => e.Branch);
-            return View(await employees.ToListAsync());
+            var aspNetCoreWithAppRolesAndFineGrainedDbContext = _context.Sales.Include(s => s.Employee);
+            return View(await aspNetCoreWithAppRolesAndFineGrainedDbContext.ToListAsync());
         }
 
-        // GET: Employees/Details/5
+        // GET: Sales/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Branch)
-                .FirstOrDefaultAsync(m => m.EmployeeID == id);
-            if (employee == null)
+            var sale = await _context.Sales
+                .Include(s => s.Employee)
+                .FirstOrDefaultAsync(m => m.SaleID == id);
+            if (sale == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(sale);
         }
 
-        // GET: Employees/Create
+        // GET: Sales/Create
         public IActionResult Create()
         {
-            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID");
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID");
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Sales/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeID,BranchID,LastName,FirstName")] Employee employee)
+        public async Task<IActionResult> Create([Bind("SaleID,EmployeeID,Value")] Sale sale)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(sale);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
-            return View(employee);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
+            return View(sale);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Sales/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var sale = await _context.Sales.FindAsync(id);
+            if (sale == null)
             {
                 return NotFound();
             }
-            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
-            return View(employee);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
+            return View(sale);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Sales/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeID,BranchID,LastName,FirstName")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("SaleID,EmployeeID,Value")] Sale sale)
         {
-            if (id != employee.EmployeeID)
+            if (id != sale.SaleID)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace web_app.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(sale);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.EmployeeID))
+                    if (!SaleExists(sale.SaleID))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace web_app.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
-            return View(employee);
+            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
+            return View(sale);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Sales/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Branch)
-                .FirstOrDefaultAsync(m => m.EmployeeID == id);
-            if (employee == null)
+            var sale = await _context.Sales
+                .Include(s => s.Employee)
+                .FirstOrDefaultAsync(m => m.SaleID == id);
+            if (sale == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(sale);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Sales/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
+            var sale = await _context.Sales.FindAsync(id);
+            _context.Sales.Remove(sale);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool SaleExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeID == id);
+            return _context.Sales.Any(e => e.SaleID == id);
         }
     }
 }

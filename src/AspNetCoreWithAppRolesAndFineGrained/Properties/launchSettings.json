@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "web_app": {
+    "AspNetCoreWithAppRolesAndFineGrained": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

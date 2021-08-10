@@ -2,14 +2,16 @@
 using AspNetCoreWithAppRolesAndFineGrained.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace web_app.Migrations
+namespace AspNetCoreWithAppRolesAndFineGrained.Migrations
 {
     [DbContext(typeof(AspNetCoreWithAppRolesAndFineGrainedDbContext))]
-    partial class AspNetCoreWithAppRolesAndFineGrainedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210806213313_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

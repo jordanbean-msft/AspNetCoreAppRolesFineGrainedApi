@@ -8,24 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreWithAppRolesAndFineGrained.Data;
 using AspNetCoreWithAppRolesAndFineGrained.Models;
 
-namespace web_app.Controllers
+namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
 {
-    public class BranchesController : Controller
+    public class EmployeesController : Controller
     {
         private readonly AspNetCoreWithAppRolesAndFineGrainedDbContext _context;
 
-        public BranchesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
+        public EmployeesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
         {
             _context = context;
         }
 
-        // GET: Branches
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Branches.ToListAsync());
+            var employees = _context.Employees.Include(e => e.Branch);
+            return View(await employees.ToListAsync());
         }
 
-        // GET: Branches/Details/5
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches
-                .FirstOrDefaultAsync(m => m.BranchID == id);
-            if (branch == null)
+            var employee = await _context.Employees
+                .Include(e => e.Branch)
+                .FirstOrDefaultAsync(m => m.EmployeeID == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(branch);
+            return View(employee);
         }
 
-        // GET: Branches/Create
+        // GET: Employees/Create
         public IActionResult Create()
         {
+            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID");
             return View();
         }
 
-        // POST: Branches/Create
+        // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BranchID,Name,AADGroupID")] Branch branch)
+        public async Task<IActionResult> Create([Bind("EmployeeID,BranchID,LastName,FirstName")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(branch);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(branch);
+            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
+            return View(employee);
         }
 
-        // GET: Branches/Edit/5
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches.FindAsync(id);
-            if (branch == null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(branch);
+            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
+            return View(employee);
         }
 
-        // POST: Branches/Edit/5
+        // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BranchID,Name,AADGroupID")] Branch branch)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeID,BranchID,LastName,FirstName")] Employee employee)
         {
-            if (id != branch.BranchID)
+            if (id != employee.EmployeeID)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace web_app.Controllers
             {
                 try
                 {
-                    _context.Update(branch);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BranchExists(branch.BranchID))
+                    if (!EmployeeExists(employee.EmployeeID))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace web_app.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(branch);
+            ViewData["BranchID"] = new SelectList(_context.Branches, "BranchID", "BranchID", employee.BranchID);
+            return View(employee);
         }
 
-        // GET: Branches/Delete/5
+        // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +130,31 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var branch = await _context.Branches
-                .FirstOrDefaultAsync(m => m.BranchID == id);
-            if (branch == null)
+            var employee = await _context.Employees
+                .Include(e => e.Branch)
+                .FirstOrDefaultAsync(m => m.EmployeeID == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(branch);
+            return View(employee);
         }
 
-        // POST: Branches/Delete/5
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var branch = await _context.Branches.FindAsync(id);
-            _context.Branches.Remove(branch);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BranchExists(int id)
+        private bool EmployeeExists(int id)
         {
-            return _context.Branches.Any(e => e.BranchID == id);
+            return _context.Employees.Any(e => e.EmployeeID == id);
         }
     }
 }

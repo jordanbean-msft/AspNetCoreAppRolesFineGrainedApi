@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace web_app.Migrations
+namespace AspNetCoreWithAppRolesAndFineGrained.Migrations
 {
     public partial class InitialCreate : Migration
     {

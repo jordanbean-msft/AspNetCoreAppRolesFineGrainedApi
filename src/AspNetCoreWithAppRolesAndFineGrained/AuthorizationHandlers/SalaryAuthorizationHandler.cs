@@ -24,7 +24,10 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
 
       foreach (var requirement in pendingRequirements)
       {
-        handlers[requirement.GetType()](requirement, context);
+        Action<IAuthorizationRequirement, AuthorizationHandlerContext> handler;
+        if(handlers.TryGetValue(requirement.GetType(), out handler)) {
+          handler(requirement, context);
+        }
       }
 
       return Task.CompletedTask;

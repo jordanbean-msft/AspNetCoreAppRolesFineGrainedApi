@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers;
 using AspNetCoreWithAppRolesAndFineGrained;
 
-namespace web_app.Controllers
+namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
 {
   [Authorize]
   public class SalariesController : Controller

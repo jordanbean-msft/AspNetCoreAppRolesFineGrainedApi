@@ -8,25 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreWithAppRolesAndFineGrained.Data;
 using AspNetCoreWithAppRolesAndFineGrained.Models;
 
-namespace web_app.Controllers
+namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
 {
-    public class SalesController : Controller
+    public class BranchesController : Controller
     {
         private readonly AspNetCoreWithAppRolesAndFineGrainedDbContext _context;
 
-        public SalesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
+        public BranchesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
         {
             _context = context;
         }
 
-        // GET: Sales
+        // GET: Branches
         public async Task<IActionResult> Index()
         {
-            var aspNetCoreWithAppRolesAndFineGrainedDbContext = _context.Sales.Include(s => s.Employee);
-            return View(await aspNetCoreWithAppRolesAndFineGrainedDbContext.ToListAsync());
+            return View(await _context.Branches.ToListAsync());
         }
 
-        // GET: Sales/Details/5
+        // GET: Branches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var sale = await _context.Sales
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(m => m.SaleID == id);
-            if (sale == null)
+            var branch = await _context.Branches
+                .FirstOrDefaultAsync(m => m.BranchID == id);
+            if (branch == null)
             {
                 return NotFound();
             }
 
-            return View(sale);
+            return View(branch);
         }
 
-        // GET: Sales/Create
+        // GET: Branches/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID");
             return View();
         }
 
-        // POST: Sales/Create
+        // POST: Branches/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SaleID,EmployeeID,Value")] Sale sale)
+        public async Task<IActionResult> Create([Bind("BranchID,Name,AADGroupID")] Branch branch)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sale);
+                _context.Add(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
-            return View(sale);
+            return View(branch);
         }
 
-        // GET: Sales/Edit/5
+        // GET: Branches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var sale = await _context.Sales.FindAsync(id);
-            if (sale == null)
+            var branch = await _context.Branches.FindAsync(id);
+            if (branch == null)
             {
                 return NotFound();
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
-            return View(sale);
+            return View(branch);
         }
 
-        // POST: Sales/Edit/5
+        // POST: Branches/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SaleID,EmployeeID,Value")] Sale sale)
+        public async Task<IActionResult> Edit(int id, [Bind("BranchID,Name,AADGroupID")] Branch branch)
         {
-            if (id != sale.SaleID)
+            if (id != branch.BranchID)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace web_app.Controllers
             {
                 try
                 {
-                    _context.Update(sale);
+                    _context.Update(branch);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SaleExists(sale.SaleID))
+                    if (!BranchExists(branch.BranchID))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace web_app.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeID"] = new SelectList(_context.Employees, "EmployeeID", "EmployeeID", sale.EmployeeID);
-            return View(sale);
+            return View(branch);
         }
 
-        // GET: Sales/Delete/5
+        // GET: Branches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace web_app.Controllers
                 return NotFound();
             }
 
-            var sale = await _context.Sales
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(m => m.SaleID == id);
-            if (sale == null)
+            var branch = await _context.Branches
+                .FirstOrDefaultAsync(m => m.BranchID == id);
+            if (branch == null)
             {
                 return NotFound();
             }
 
-            return View(sale);
+            return View(branch);
         }
 
-        // POST: Sales/Delete/5
+        // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sale = await _context.Sales.FindAsync(id);
-            _context.Sales.Remove(sale);
+            var branch = await _context.Branches.FindAsync(id);
+            _context.Branches.Remove(branch);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SaleExists(int id)
+        private bool BranchExists(int id)
         {
-            return _context.Sales.Any(e => e.SaleID == id);
+            return _context.Branches.Any(e => e.BranchID == id);
         }
     }
 }
