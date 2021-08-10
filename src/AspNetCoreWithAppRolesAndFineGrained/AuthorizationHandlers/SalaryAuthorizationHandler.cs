@@ -15,6 +15,9 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
       },
       {
         typeof(OnlyManagementCanModifySalariesRequirement), (requirement, context) => OnlyManagementCanModifySalariesRequirementHandler(requirement, context)
+      },
+      {
+        typeof(BranchManagerCanOnlyModifyOwnBranchSalaries), (requirement, context) => BranchManagerCanOnlyModifyOwnBranchSalariesRequirementHandler(requirement, context)
       }
     };
 
@@ -25,7 +28,8 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
       foreach (var requirement in pendingRequirements)
       {
         Action<IAuthorizationRequirement, AuthorizationHandlerContext> handler;
-        if(handlers.TryGetValue(requirement.GetType(), out handler)) {
+        if (handlers.TryGetValue(requirement.GetType(), out handler))
+        {
           handler(requirement, context);
         }
       }
@@ -51,10 +55,27 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
     private static void OnlyManagementCanModifySalariesRequirementHandler(IAuthorizationRequirement requirement, AuthorizationHandlerContext context)
     {
       if (context.User.IsInRole(AppRoles.CFO_READWRITE)
-              || context.User.IsInRole(AppRoles.REGIONAL_MANAGER_READWRITE))
+          || context.User.IsInRole(AppRoles.REGIONAL_MANAGER_READWRITE))
       {
         context.Succeed(requirement);
       }
+    }
+
+    private static void BranchManagerCanOnlyModifyOwnBranchSalariesRequirementHandler(IAuthorizationRequirement requirement, AuthorizationHandlerContext context)
+    {
+      var aadGroups = context.User.Claims.Where(claim => claim.Type == "groups").Select(group => group.Value).ToList<string>();
+
+      if (context.Resource is Salary && context.User.IsInRole(AppRoles.REGIONAL_MANAGER_READWRITE))
+      {
+        if (aadGroups.Contains(((Salary)context.Resource).Employee.Branch.RegionalManagerAADGroupId))
+        {
+          context.Succeed(requirement);
+        }
+      }
+      else
+      {
+        context.Succeed(requirement);
+      }      
     }
   }
 }

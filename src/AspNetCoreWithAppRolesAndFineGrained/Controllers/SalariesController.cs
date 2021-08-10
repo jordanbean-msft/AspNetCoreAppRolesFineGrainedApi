@@ -117,8 +117,11 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
     public async Task<IActionResult> Create([Bind("SalaryID,EmployeeID,Value")] Salary salary)
     {
       //need to load the Employee navigation property
-      _context.Salaries.Attach(salary);
-      await _context.Entry(salary).Reference(s => s.Employee).LoadAsync();
+      var employee = await _context.Employees.Where(employee => employee.EmployeeID == salary.EmployeeID)
+                                             .Include(employee => employee.Branch)
+                                             .AsNoTracking()
+                                             .FirstAsync();
+      salary.Employee = employee;
       
       var authorizationResult = await _authorizationService.AuthorizeAsync(User, salary, Policies.SALARY);
 
@@ -157,6 +160,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
       //need to load the Employee navigation property
       _context.Salaries.Attach(salary);
       await _context.Entry(salary).Reference(s => s.Employee).LoadAsync();
+      await _context.Entry(salary.Employee).Reference(e => e.Branch).LoadAsync();
 
       var authorizationResult = await _authorizationService.AuthorizeAsync(User, salary, Policies.SALARY);
 
@@ -184,11 +188,14 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
         return NotFound();
       }
 
-      //need to load the Employee navigation property
-      _context.Salaries.Attach(salary);
-      await _context.Entry(salary).Reference(s => s.Employee).LoadAsync();
+      //need to load the Employee & Branch navigation property      
+      var existingSalary = await _context.Salaries.Where(s => s.SalaryID == salary.SalaryID)
+                                                  .Include(s => s.Employee)
+                                                  .Include(s => s.Employee.Branch)
+                                                  .AsNoTracking()
+                                                  .FirstAsync();
 
-      var authorizationResult = await _authorizationService.AuthorizeAsync(User, salary, Policies.SALARY);
+      var authorizationResult = await _authorizationService.AuthorizeAsync(User, existingSalary, Policies.SALARY);
 
       if (authorizationResult.Succeeded)
       {
@@ -241,6 +248,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
       //need to load the Employee navigation property
       _context.Salaries.Attach(salary);
       await _context.Entry(salary).Reference(s => s.Employee).LoadAsync();
+      await _context.Entry(salary.Employee).Reference(e => e.Branch).LoadAsync();
 
       var authorizationResult = await _authorizationService.AuthorizeAsync(User, salary, Policies.SALARY);
 
@@ -265,6 +273,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
       //need to load the Employee navigation property
       _context.Salaries.Attach(salary);
       await _context.Entry(salary).Reference(s => s.Employee).LoadAsync();
+      await _context.Entry(salary.Employee).Reference(e => e.Branch).LoadAsync();
 
       var authorizationResult = await _authorizationService.AuthorizeAsync(User, salary, Policies.SALARY);
 
