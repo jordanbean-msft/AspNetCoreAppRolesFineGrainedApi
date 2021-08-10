@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using AspNetCoreWithAppRoleAndFineGrained.Data;
+using AspNetCoreWithAppRolesAndFineGrained.Data;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AspNetCoreWithAppRoleAndFineGrained
+namespace AspNetCoreWithAppRolesAndFineGrained
 {
     public class Program
     {
@@ -27,7 +27,7 @@ namespace AspNetCoreWithAppRoleAndFineGrained
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<AspNetCoreWithAppRoleAndFineGrainedDbContext>();
+                    var context = services.GetRequiredService<AspNetCoreWithAppRolesAndFineGrainedDbContext>();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)

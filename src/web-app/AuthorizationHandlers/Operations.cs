@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.AuthorizationHandlers {
+namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers {
   public static class Operations
 {
     public static OperationAuthorizationRequirement Create =

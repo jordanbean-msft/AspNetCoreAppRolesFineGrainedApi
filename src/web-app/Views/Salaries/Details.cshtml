@@ -1,4 +1,4 @@
-@model AspNetCoreWithAppRoleAndFineGrained.Models.Salary
+@model AspNetCoreWithAppRolesAndFineGrained.Models.Salary
 
 @{
     ViewData["Title"] = "Details";
@@ -25,6 +25,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.SalaryID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if((await AuthorizationService.AuthorizeAsync(User, Model, Policies.SALARY)).Succeeded)
+    {
+      <a asp-action="Edit" asp-route-id="@Model.SalaryID">Edit</a>
+    }
+    | <a asp-action="Index">Back to List</a>
 </div>

@@ -1,10 +1,10 @@
-using AspNetCoreWithAppRoleAndFineGrained.Models;
+using AspNetCoreWithAppRolesAndFineGrained.Models;
 using System;
 using System.Linq;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.Data {
+namespace AspNetCoreWithAppRolesAndFineGrained.Data {
   public static class DbInitializer {
-    public static void Initialize(AspNetCoreWithAppRoleAndFineGrainedDbContext context) {
+    public static void Initialize(AspNetCoreWithAppRolesAndFineGrainedDbContext context) {
       context.Database.EnsureCreated();
 
       if(context.Branches.Any()) {

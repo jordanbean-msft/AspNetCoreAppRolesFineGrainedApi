@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AspNetCoreWithAppRoleAndFineGrained.Data;
-using AspNetCoreWithAppRoleAndFineGrained.Models;
+using AspNetCoreWithAppRolesAndFineGrained.Data;
+using AspNetCoreWithAppRolesAndFineGrained.Models;
 
 namespace web_app.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly AspNetCoreWithAppRoleAndFineGrainedDbContext _context;
+        private readonly AspNetCoreWithAppRolesAndFineGrainedDbContext _context;
 
-        public EmployeesController(AspNetCoreWithAppRoleAndFineGrainedDbContext context)
+        public EmployeesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
         {
             _context = context;
         }

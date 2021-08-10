@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AspNetCoreWithAppRoleAndFineGrained.Data;
-using AspNetCoreWithAppRoleAndFineGrained.Models;
+using AspNetCoreWithAppRolesAndFineGrained.Data;
+using AspNetCoreWithAppRolesAndFineGrained.Models;
 
 namespace web_app.Controllers
 {
     public class SalesController : Controller
     {
-        private readonly AspNetCoreWithAppRoleAndFineGrainedDbContext _context;
+        private readonly AspNetCoreWithAppRolesAndFineGrainedDbContext _context;
 
-        public SalesController(AspNetCoreWithAppRoleAndFineGrainedDbContext context)
+        public SalesController(AspNetCoreWithAppRolesAndFineGrainedDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace web_app.Controllers
         // GET: Sales
         public async Task<IActionResult> Index()
         {
-            var aspNetCoreWithAppRoleAndFineGrainedDbContext = _context.Sales.Include(s => s.Employee);
-            return View(await aspNetCoreWithAppRoleAndFineGrainedDbContext.ToListAsync());
+            var aspNetCoreWithAppRolesAndFineGrainedDbContext = _context.Sales.Include(s => s.Employee);
+            return View(await aspNetCoreWithAppRolesAndFineGrainedDbContext.ToListAsync());
         }
 
         // GET: Sales/Details/5

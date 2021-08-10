@@ -1,4 +1,4 @@
-@model IEnumerable<AspNetCoreWithAppRoleAndFineGrained.Models.Salary>
+@model IEnumerable<AspNetCoreWithAppRolesAndFineGrained.Models.Salary>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +6,12 @@
 
 <h1>Index</h1>
 
+@if((await AuthorizationService.AuthorizeAsync(User, Policies.SALARY)).Succeeded)
+{
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+      @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Employee.Branch.Name)
@@ -37,11 +40,17 @@
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SalaryID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SalaryID">Details</a> |
+              @if((await AuthorizationService.AuthorizeAsync(User, item, Policies.SALARY)).Succeeded)
+              {
+                <a asp-action="Edit" asp-route-id="@item.SalaryID">Edit</a>
+              }
+                | <a asp-action="Details" asp-route-id="@item.SalaryID">Details</a> |
+              @if((await AuthorizationService.AuthorizeAsync(User, item, Policies.SALARY)).Succeeded)
+              {
                 <a asp-action="Delete" asp-route-id="@item.SalaryID">Delete</a>
+              }
             </td>
         </tr>
-}
+      }
     </tbody>
 </table>

@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -14,15 +8,14 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AspNetCoreWithAppRoleAndFineGrained.Data;
+using AspNetCoreWithAppRolesAndFineGrained.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace AspNetCoreWithAppRoleAndFineGrained
+namespace AspNetCoreWithAppRolesAndFineGrained
 {
   public class Startup
   {
@@ -57,7 +50,7 @@ namespace AspNetCoreWithAppRoleAndFineGrained
         }, initialScopes)
         .AddInMemoryTokenCaches();
 
-      services.AddDbContext<AspNetCoreWithAppRoleAndFineGrainedDbContext>(options =>
+      services.AddDbContext<AspNetCoreWithAppRolesAndFineGrainedDbContext>(options =>
       {
         var connectionString = Configuration.GetConnectionString("sqlDatabaseConnectionString");
 
@@ -84,12 +77,18 @@ namespace AspNetCoreWithAppRoleAndFineGrained
       services.AddRazorPages()
         .AddMicrosoftIdentityUI();
 
-       services.AddAuthorization(options =>
-       {
-         options.AddPolicy(Policies.General, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE, AppRoles.SALESPERSON_READWRITE, AppRoles.GENERAL_READWRITE));
-         options.AddPolicy(Policies.Management, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE));
-         options.AddPolicy(Policies.Salesperson, policy => policy.RequireRole(AppRoles.SALESPERSON_READWRITE));
-       });
+      services.AddAuthorization(options =>
+      {
+        options.AddPolicy(Policies.GENERAL, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE, AppRoles.SALESPERSON_READWRITE, AppRoles.GENERAL_READWRITE));
+        options.AddPolicy(Policies.MANAGEMENT, policy => policy.RequireRole(AppRoles.CFO_READWRITE, AppRoles.REGIONAL_MANAGER_READWRITE));
+        options.AddPolicy(Policies.SALESPERSON, policy => policy.RequireRole(AppRoles.SALESPERSON_READWRITE));
+        options.AddPolicy(Policies.SALARY, policy => {
+          policy.Requirements.Add(new CannotModifyOwnSalaryRequirement());
+          policy.Requirements.Add(new OnlyManagementCanModifySalariesRequirement());
+        });
+      });
+
+      services.AddSingleton<IAuthorizationHandler, SalaryAuthorizationHandler>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

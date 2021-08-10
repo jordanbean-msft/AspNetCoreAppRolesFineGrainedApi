@@ -1,9 +1,9 @@
-using AspNetCoreWithAppRoleAndFineGrained.Models;
+using AspNetCoreWithAppRolesAndFineGrained.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.Data {
-  public class AspNetCoreWithAppRoleAndFineGrainedDbContext : DbContext {
-    public AspNetCoreWithAppRoleAndFineGrainedDbContext(DbContextOptions<AspNetCoreWithAppRoleAndFineGrainedDbContext> options) : base(options) {
+namespace AspNetCoreWithAppRolesAndFineGrained.Data {
+  public class AspNetCoreWithAppRolesAndFineGrainedDbContext : DbContext {
+    public AspNetCoreWithAppRolesAndFineGrainedDbContext(DbContextOptions<AspNetCoreWithAppRolesAndFineGrainedDbContext> options) : base(options) {
 
     }
 

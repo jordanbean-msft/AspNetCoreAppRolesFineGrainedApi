@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.Models {
+namespace AspNetCoreWithAppRolesAndFineGrained.Models {
   public class Branch {
     public int BranchID { get; set; }
 

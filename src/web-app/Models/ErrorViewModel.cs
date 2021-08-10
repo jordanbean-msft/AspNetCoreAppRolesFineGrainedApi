@@ -1,6 +1,6 @@
 using System;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.Models
+namespace AspNetCoreWithAppRolesAndFineGrained.Models
 {
     public class ErrorViewModel
     {

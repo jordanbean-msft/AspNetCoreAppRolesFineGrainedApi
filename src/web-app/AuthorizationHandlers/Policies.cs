@@ -1,8 +1,11 @@
-namespace AspNetCoreWithAppRoleAndFineGrained {
-    public static class Policies {
-      public const string Management = "ManagementPolicy";
-      public const string Salesperson = "SalespersonPolicy";
+namespace AspNetCoreWithAppRolesAndFineGrained
+{
+  public static class Policies
+  {
+    public const string MANAGEMENT = "ManagementPolicy";
+    public const string SALESPERSON = "SalespersonPolicy";
 
-      public const string General = "GeneralPolicy";
-    }
+    public const string GENERAL = "GeneralPolicy";
+    public const string SALARY = "SalaryPolicy";
+  }
 }

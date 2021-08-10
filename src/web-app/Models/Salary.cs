@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCoreWithAppRoleAndFineGrained.Models {
+namespace AspNetCoreWithAppRolesAndFineGrained.Models {
   public class Salary {
     public int SalaryID { get; set; }
     public int EmployeeID { get; set; }
