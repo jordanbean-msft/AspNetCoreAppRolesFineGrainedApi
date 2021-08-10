@@ -23,7 +23,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
           HttpContext = new DefaultHttpContext { User = anonymousUser }
         };
 
-        var result = await salaryController.Edit(1, new Salary(){ SalaryID = 1, EmployeeID = 1, Value = 100000 });
+        var result = await salaryController.Edit(1, new Salary() { SalaryID = 1, EmployeeID = 1, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
       }
@@ -46,18 +46,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         int previousSalary = beforeOwnBranchEmployee.Salary.Value;
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
-        
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
+
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == "karenfilippelli@jordanbeandemo.onmicrosoft.com").First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -78,18 +79,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         int previousSalary = beforeOwnBranchEmployee.Salary.Value;
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
-        
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
+
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == salespersonUser.Identity.Name).First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -112,18 +114,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         Assert.NotEqual(newSalary, beforeOwnBranchEmployee.Salary.Value);
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
 
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = newSalary });
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = newSalary });
 
         Assert.IsType<RedirectToActionResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == "dwightschrute@jordanbeandemo.onmicrosoft.com").First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(newSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(newSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -144,18 +147,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         int previousSalary = beforeOwnBranchEmployee.Salary.Value;
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
-        
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
+
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == "karenfilippelli@jordanbeandemo.onmicrosoft.com").First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -176,18 +180,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         int previousSalary = beforeOwnBranchEmployee.Salary.Value;
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
-        
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
+
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == regionalManagerUser.Identity.Name).First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -210,18 +215,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         Assert.NotEqual(newSalary, beforeOwnBranchEmployee.Salary.Value);
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
 
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = newSalary });
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = newSalary });
 
         Assert.IsType<RedirectToActionResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == "dwightschrute@jordanbeandemo.onmicrosoft.com").First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(newSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(newSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
 
@@ -242,18 +248,19 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
 
         int previousSalary = beforeOwnBranchEmployee.Salary.Value;
 
-        foreach (var entity in context.ChangeTracker.Entries()) {
+        foreach (var entity in context.ChangeTracker.Entries())
+        {
           entity.State = EntityState.Detached;
         }
-        
-        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary(){ SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
+
+        var result = await salaryController.Edit(beforeOwnBranchEmployee.Salary.SalaryID, new Salary() { SalaryID = beforeOwnBranchEmployee.Salary.SalaryID, EmployeeID = beforeOwnBranchEmployee.EmployeeID, Value = 100000 });
 
         Assert.IsType<ForbidResult>(result);
         var afterOwnBranchEmployee = context.Employees.Where(employee => employee.UserPrincipalName == cfoUser.Identity.Name).First();
         //need to load the Salary navigation property
         await context.Entry(afterOwnBranchEmployee).Reference(employee => employee.Salary).LoadAsync();
 
-        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);        
+        Assert.Equal(previousSalary, afterOwnBranchEmployee.Salary.Value);
       }
     }
   }

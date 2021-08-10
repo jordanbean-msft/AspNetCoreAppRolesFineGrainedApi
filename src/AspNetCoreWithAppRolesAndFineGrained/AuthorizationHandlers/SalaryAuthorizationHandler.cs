@@ -63,10 +63,10 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
 
     private static void BranchManagerCanOnlyModifyOwnBranchSalariesRequirementHandler(IAuthorizationRequirement requirement, AuthorizationHandlerContext context)
     {
-      var aadGroups = context.User.Claims.Where(claim => claim.Type == "groups").Select(group => group.Value).ToList<string>();
-
       if (context.Resource is Salary && context.User.IsInRole(AppRoles.REGIONAL_MANAGER_READWRITE))
       {
+        var aadGroups = context.User.Claims.Where(claim => claim.Type == "groups").Select(group => group.Value).ToList<string>();
+      
         if (aadGroups.Contains(((Salary)context.Resource).Employee.Branch.RegionalManagerAADGroupId))
         {
           context.Succeed(requirement);

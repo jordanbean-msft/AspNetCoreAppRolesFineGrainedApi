@@ -8,9 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreWithAppRolesAndFineGrained.Data;
 using AspNetCoreWithAppRolesAndFineGrained.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
-using AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers;
-using AspNetCoreWithAppRolesAndFineGrained;
 
 namespace AspNetCoreWithAppRolesAndFineGrained.Controllers
 {
