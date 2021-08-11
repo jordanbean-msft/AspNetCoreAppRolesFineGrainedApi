@@ -1,6 +1,6 @@
 # AspNetCoreWithAppRolesAndFineGrained
 
-This demo use AAD App Roles & also provides fine-grained access control to data using Resource-based authorization.
+This demo use AAD App Roles & also provides fine-grained access control to data using [Resource-based](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased?view=aspnetcore-5.0) and [Policy-based](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-5.0) authorization.
 
 ## Disclaimer
 
@@ -21,7 +21,7 @@ In this example, there are 2 branches of the company & a corporate office. The f
 
 ## Azure Active Directory configuration
 
-To use this example, you will need to configure Azure Active Directory
+To use this example, you will need to configure an Azure Active Directory App Registration/Service Princpal & AAD groups.
 
 ### Create App Registration & configure
 
@@ -206,7 +206,15 @@ In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.
 
 In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
 
-![editSalary](.img/editSalaries.png)
+![editSalary](.img/editSalary.png)
+
+### Views
+
+In the `src/AspNetCoreWithAppRolesAndFineGrained/Views/Salaries/Index.cshtml` you can see that we hide the **Create new** button if the user is not a manager.
+
+We also hide the **Edit** and **Delete** buttons if the user is not a manager & is not trying to modify their own salary.
+
+![view](.img/view.png)
 
 ## Tests
 
