@@ -133,11 +133,88 @@ As you sign in with different users, you will see that they have different permi
 
 **Salesperson**
 
+As someone with the General.ReadWrite role, Dwight can see his own salary, but not his fellow employees. He also cannot create a new salary record or modify his salary.
+
+![salesperson](.img/salesperson.png)
+
 **Regional manager - Scranton**
+
+As someone with the RegionalManager.ReadWrite role, Michael can see his own salary and the salaries of his branch employees (but not those of the Stamford branch). He can modify his own employees salaries, but not his own.
+
+![salesperson](.img/regionalManagerScranton.png)
 
 **Regional manager - Stamford**
 
+As someone with the RegionalManager.ReadWrite role, Josh can see his own salary and the salaries of his branch employees (but not those of the Scranton branch). He can modify his own employees salaries, but not his own.
+
+![salesperson](.img/regionalManagerStamford.png)
+
 **CFO**
+
+As someone with the CFO.ReadWrite role, David can see his own salary and the salaries of all his employees. He can modify his employees salaries, but not his own.
+
+![salesperson](.img/cfo.png)
+
+## How this works
+
+### ID token for each user signin
+
+We don't want to have to constantly issue Graph API queries to find out information about the user, so we can request that every JWT ID token that is presented to the application include the **AAD groups** they are a part of (that are related to the application), the **app roles** the user is assigned (by virtue of being in those AAD groups) and the **upn** of the user (so we can key off it in the database).
+
+![jwtToken](.img/jwtToken.png)
+
+### Setup authorization service
+
+In the `src/AspNetCoreWithAppRolesAndFineGrained/Startup.cs` file in the **ConfigureServices** method, we need to set up the authorization policies we want enforced.
+
+![startupConfigureServices](.img/startupConfigureServices.png)
+
+- You can group several roles together into a single policy so that you don't have to specify them multiple times.
+- You can define a list of requirements that must all return **Succeeded** for the policy to pass.
+
+Add a new `SalaryAuthorizationHandler` to the list of services.
+
+### Authorization Service
+
+In the `src/AspNetCoreWithAppRolesAndFineGrained/AuthorizationHandlers/SalaryAuthorizationHandler.cs` file, the **SalaryAuthorizationHandler** service is responsible for evaluating the list of requirements defined in the **Salary** policy.
+
+It will loop through each requirement as defined in the `Startup.cs` file. For each requirement, a function will get called to evaluate it.
+
+![salaryAuthorizationHandlerLoop](.img/salaryAuthorizationHandlerLoop.png)
+
+For the **CannotModifyOwnSalaryRequirement**, we need to check the `User.Identity.Name` to see if it is the same `UserPrincipalName` of the **Salary** object the user is trying to modify. No one should be able to modify their own salary.
+
+![salaryAuthorizationHandlerCannotModifyOwnSalary](.img/salaryAuthorizationHandlerCannotModifyOwnSalary.png)
+
+For the **OnlyManagementCanModifySalariesRequirement**, we need to check the roles the signed-in user has to see if they are in a management role.
+
+![salaryAuthorizationHandlerBranchManagerCanOnlyModifyOwnBranch](.img/salaryAuthorizationHandlerBranchManagerCanOnlyModifyOwnBranch.png)
+
+For the **BranchManagerCanOnlyModifyOwnBranchSalariesRequirement**, we need to check if the user is a regional manager, and if so, ensure they are only modifying data for their own branch employees.
+
+![salaryAuthorizationHandlerOnlyManagementCanModifySalaries](.img/salaryAuthorizationHandlerOnlyManagementCanModifySalaries.png)
+
+### Controller
+
+**Index**
+
+In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
+
+![getSalaries](.img/getSalaries.png)
+
+**Edit**
+
+In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
+
+![editSalary](.img/editSalaries.png)
+
+## Tests
+
+Unit tests can be found in the `src/AspNetCoreWithAppRolesAndFineGrained.Tests` directory. Run with the following command in that directory.
+
+```shell
+dotnet test
+```
 
 ## Deployment to Azure
 
@@ -153,3 +230,6 @@ az deployment group create --resource-group rg-webAppWithAppRolesAndFineGrained-
 - https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 - https://docs.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased?view=aspnetcore-5.0
 - https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-5.0
+- https://docs.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-database-update
+- https://docs.microsoft.com/en-us/ef/core/querying/related-data/explicit
+- https://docs.microsoft.com/en-us/ef/core/change-tracking/explicit-tracking

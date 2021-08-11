@@ -188,7 +188,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.Tests
             {
               policy.Requirements.Add(new CannotModifyOwnSalaryRequirement());
               policy.Requirements.Add(new OnlyManagementCanModifySalariesRequirement());
-              policy.Requirements.Add(new BranchManagerCanOnlyModifyOwnBranchSalaries());
+              policy.Requirements.Add(new BranchManagerCanOnlyModifyOwnBranchSalariesRequirement());
             });
           });
       });

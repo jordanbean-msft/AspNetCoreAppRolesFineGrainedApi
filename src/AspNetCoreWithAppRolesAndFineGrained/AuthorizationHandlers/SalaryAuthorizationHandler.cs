@@ -17,7 +17,7 @@ namespace AspNetCoreWithAppRolesAndFineGrained.AuthorizationHandlers
         typeof(OnlyManagementCanModifySalariesRequirement), (requirement, context) => OnlyManagementCanModifySalariesRequirementHandler(requirement, context)
       },
       {
-        typeof(BranchManagerCanOnlyModifyOwnBranchSalaries), (requirement, context) => BranchManagerCanOnlyModifyOwnBranchSalariesRequirementHandler(requirement, context)
+        typeof(BranchManagerCanOnlyModifyOwnBranchSalariesRequirement), (requirement, context) => BranchManagerCanOnlyModifyOwnBranchSalariesRequirementHandler(requirement, context)
       }
     };
 
