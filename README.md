@@ -117,7 +117,7 @@ To use this example, you will need to configure an Azure Active Directory App Re
 
 ## Run locally
 
-1.  Initialize the local Sqlite database
+1.  Initialize the local Sqlite database. Make sure you are in the `src/AspNetCoreWithAppRolesAndFineGrained` directory.
 
     ```shell
     dotnet ef database update
