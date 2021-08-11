@@ -1,8 +1,11 @@
 param longName string
+param userAssignedManagedIdentityName string
+param keyVaultName string
+param redisCacheConnectionStringSecretName string
+param sqlDatabaseConnectionStringSecretName string
 
-resource webAppManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-  name: 'mi-${longName}'
-  location: resourceGroup().location  
+resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  name: userAssignedManagedIdentityName
 }
 
 resource webApp 'Microsoft.Web/sites@2021-01-15' = {
@@ -11,12 +14,24 @@ resource webApp 'Microsoft.Web/sites@2021-01-15' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${webAppManagedIdentity.id}': {}
+      '${userAssignedManagedIdentity.id}': {}
     }
   }
-  properties: {    
+  properties: {
+    siteConfig: {
+      connectionStrings: [
+        {
+          name: 'redisCacheConnectionString'
+          connectionString: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${redisCacheConnectionStringSecretName})'
+        }
+        {
+          name: 'sqlDatabaseConnectionString'
+          connectionString: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${sqlDatabaseConnectionStringSecretName})'
+        }
+      ]
+    }
   }
+
 }
 
 output webAppName string = webApp.name
-output webAppManagedIdentityName string = webAppManagedIdentity.name

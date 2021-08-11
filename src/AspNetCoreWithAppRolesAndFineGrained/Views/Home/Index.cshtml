@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div>
+    <table class="table">
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+        </tr>
+        @foreach (var claim in (User.Identity as System.Security.Claims.ClaimsIdentity).Claims) {
+            <tr>
+                <td>@Html.DisplayFor(x => claim.Type)</td>
+                <td>@Html.DisplayFor(x => claim.Value)</td>
+            </tr>
+        }
+    </table>
+</div> 
+</div>
