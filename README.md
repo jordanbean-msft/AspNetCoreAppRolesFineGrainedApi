@@ -96,7 +96,7 @@ To use this example, you will need to configure an Azure Active Directory App Re
 
 1.  Under the **Enterprise applciations** blade, search for your new AAD service principal (the same name as the app registration)
 
-1.  Under the **Users and roles** blade, click on **Add user/group** and map the new AAD groups to their respective roles.
+1.  Under the **Users and groups** blade, click on **Add user/group** and map the new AAD groups to their respective roles.
 
     Display Name | Object Type | Role assigned
     ------------ | ----------- | -------------
