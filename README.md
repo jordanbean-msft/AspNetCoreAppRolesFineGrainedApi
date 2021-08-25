@@ -1,4 +1,4 @@
-# AspNetCoreWithAppRolesAndFineGrained
+# AspNetCoreAppRolesFineGrainedApi
 
 This demo use AAD App Roles & also provides fine-grained access control to data using [Resource-based](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased?view=aspnetcore-5.0) and [Policy-based](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-5.0) authorization.
 
@@ -111,13 +111,13 @@ To use this example, you will need to configure an Azure Active Directory App Re
 
 ## Web app configuration
 
-1.  In the `src/AspNetCoreWithAppRolesAndFineGrained/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
+1.  In the `src/AspNetCoreAppRolesFineGrainedApi/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
 
 1.  In the `src/Data/DbInitializer.cs` file, update the values to match your **app role names**, **group IDs** and **users**.
 
 ## Run locally
 
-1.  Initialize the local Sqlite database. Make sure you are in the `src/AspNetCoreWithAppRolesAndFineGrained` directory.
+1.  Initialize the local Sqlite database. Make sure you are in the `src/AspNetCoreAppRolesFineGrainedApi` directory.
 
     ```shell
     dotnet ef database update
@@ -165,7 +165,7 @@ We don't want to have to constantly issue Graph API queries to find out informat
 
 ### Setup authorization service
 
-In the `src/AspNetCoreWithAppRolesAndFineGrained/Startup.cs` file in the **ConfigureServices** method, we need to set up the authorization policies we want enforced.
+In the `src/AspNetCoreAppRolesFineGrainedApi/Startup.cs` file in the **ConfigureServices** method, we need to set up the authorization policies we want enforced.
 
 ![startupConfigureServices](.img/startupConfigureServices.png)
 
@@ -176,7 +176,7 @@ Add a new `SalaryAuthorizationHandler` to the list of services.
 
 ### Authorization Service
 
-In the `src/AspNetCoreWithAppRolesAndFineGrained/AuthorizationHandlers/SalaryAuthorizationHandler.cs` file, the **SalaryAuthorizationHandler** service is responsible for evaluating the list of requirements defined in the **Salary** policy.
+In the `src/AspNetCoreAppRolesFineGrainedApi/AuthorizationHandlers/SalaryAuthorizationHandler.cs` file, the **SalaryAuthorizationHandler** service is responsible for evaluating the list of requirements defined in the **Salary** policy.
 
 It will loop through each requirement as defined in the `Startup.cs` file. For each requirement, a function will get called to evaluate it.
 
@@ -198,19 +198,19 @@ For the **BranchManagerCanOnlyModifyOwnBranchSalariesRequirement**, we need to c
 
 **Index**
 
-In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
+In the `src/AspNetCoreAppRolesFineGrainedApi/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
 
 ![getSalaries](.img/getSalaries.png)
 
 **Edit**
 
-In the `src/AspNetCoreWithAppRolesAndFineGrained/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
+In the `src/AspNetCoreAppRolesFineGrainedApi/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
 
 ![editSalary](.img/editSalary.png)
 
 ### Views
 
-In the `src/AspNetCoreWithAppRolesAndFineGrained/Views/Salaries/Index.cshtml` you can see that we hide the **Create new** button if the user is not a manager.
+In the `src/AspNetCoreAppRolesFineGrainedApi/Views/Salaries/Index.cshtml` you can see that we hide the **Create new** button if the user is not a manager.
 
 We also hide the **Edit** and **Delete** buttons if the user is not a manager & is not trying to modify their own salary.
 
@@ -218,7 +218,7 @@ We also hide the **Edit** and **Delete** buttons if the user is not a manager & 
 
 ## Tests
 
-Unit tests can be found in the `src/AspNetCoreWithAppRolesAndFineGrained.Tests` directory. Run with the following command in that directory.
+Unit tests can be found in the `src/AspNetCoreAppRolesFineGrainedApi.Tests` directory. Run with the following command in that directory.
 
 ```shell
 dotnet test
