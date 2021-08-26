@@ -27,15 +27,17 @@ namespace AspNetCoreAppRolesFineGrainedApi.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Employees.Include(e => e.Branch).ToListAsync();
         }
 
         // GET: api/Employee/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-
+            var employee = await _context.Employees
+                .Include(e => e.Branch)
+                .FirstOrDefaultAsync(m => m.EmployeeID == id);
+                
             if (employee == null)
             {
                 return NotFound();
@@ -58,6 +60,7 @@ namespace AspNetCoreAppRolesFineGrainedApi.Api.Controllers
 
             try
             {
+                _context.Update(employee);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
