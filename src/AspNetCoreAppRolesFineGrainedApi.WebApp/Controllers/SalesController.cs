@@ -23,11 +23,10 @@ namespace AspNetCoreAppRolesFineGrainedApi.Controllers
         }
 
         // GET: Sales
-        // public async Task<IActionResult> Index()
-        // {
-        //     var AspNetCoreAppRolesFineGrainedApiDbContext = _context.Sales.Include(s => s.Employee);
-        //     return View(await AspNetCoreAppRolesFineGrainedApiDbContext.ToListAsync());
-        // }
+        public async Task<IActionResult> Index()
+        {            
+            return View(await saleApiService.GetAsync());
+        }
 
         // // GET: Sales/Details/5
         // public async Task<IActionResult> Details(int? id)

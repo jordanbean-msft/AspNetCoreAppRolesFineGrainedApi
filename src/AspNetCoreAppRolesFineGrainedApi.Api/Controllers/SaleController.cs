@@ -27,7 +27,7 @@ namespace AspNetCoreAppRolesFineGrainedApi.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sale>>> GetSales()
         {
-            return await _context.Sales.ToListAsync();
+            return await _context.Sales.Include(s => s.Employee).ToListAsync();
         }
 
         // GET: api/Sale/5
