@@ -2,9 +2,9 @@ using Xunit;
 using AspNetCoreAppRolesFineGrainedApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using AspNetCoreAppRolesFineGrainedApi.Data;
+using AspNetCoreAppRolesFineGrainedApi.Api.Data;
 using System.Linq;
-using AspNetCoreAppRolesFineGrainedApi.Models;
+using AspNetCoreAppRolesFineGrainedApi.WebApp.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 

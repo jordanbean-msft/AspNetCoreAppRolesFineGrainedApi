@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreAppRolesFineGrainedApi.Api.Data;
 using AspNetCoreAppRolesFineGrainedApi.Api.Models;
+using Microsoft.Identity.Web.Resource;
 
 namespace AspNetCoreAppRolesFineGrainedApi.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RequiredScope(RequiredScopesConfigurationKey = "ApiScopes:DefaultScope")]
     public class BranchController : ControllerBase
     {
         private readonly AspNetCoreAppRolesFineGrainedApiDbContext _context;
