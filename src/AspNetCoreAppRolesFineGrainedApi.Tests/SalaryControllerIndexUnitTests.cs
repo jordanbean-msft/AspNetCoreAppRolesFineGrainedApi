@@ -1,13 +1,13 @@
 using Xunit;
-using AspNetCoreAppRolesFineGrainedApi.Controllers;
+using DunderMifflinInfinity.Api.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using AspNetCoreAppRolesFineGrainedApi.Api.Data;
+using DunderMifflinInfinity.Api.Data;
 using System.Linq;
-using AspNetCoreAppRolesFineGrainedApi.WebApp.Models;
+using DunderMifflinInfinity.Api.Models;
 using System.Collections.Generic;
 
-namespace AspNetCoreAppRolesFineGrainedApi.Tests
+namespace DunderMifflinInfinity.Api.Tests
 {
   public class SalaryControllerIndexUnitTests : SalaryControllerUnitTests
   {

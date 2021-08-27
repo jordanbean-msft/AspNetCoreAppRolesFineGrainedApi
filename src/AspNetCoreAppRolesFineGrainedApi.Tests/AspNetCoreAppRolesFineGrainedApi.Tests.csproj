@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCoreAppRolesFineGrainedApi.WebApp\AspNetCoreAppRolesFineGrainedApi.csproj" />
+    <ProjectReference Include="..\AspNetCoreAppRolesFineGrainedApi.Api\AspNetCoreAppRolesFineGrainedApi.Api.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,22 +2,22 @@ using System;
 using Xunit;
 using System.Security.Principal;
 using System.Security.Claims;
-using AspNetCoreAppRolesFineGrainedApi.Controllers;
+using DunderMifflinInfinity.Api.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using AspNetCoreAppRolesFineGrainedApi.Api.Data;
+using DunderMifflinInfinity.Api.Data;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using AspNetCoreAppRolesFineGrainedApi.WebApp.Models;
+using DunderMifflinInfinity.Api.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using AspNetCoreAppRolesFineGrainedApi.AuthorizationHandlers;
+using DunderMifflinInfinity.Api.AuthorizationHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
-namespace AspNetCoreAppRolesFineGrainedApi.Tests
+namespace DunderMifflinInfinity.Api.Tests
 {
   public class SalaryControllerUnitTests
   {
