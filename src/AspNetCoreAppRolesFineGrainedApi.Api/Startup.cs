@@ -59,11 +59,11 @@ namespace AspNetCoreAppRolesFineGrainedApi.Api
             options.UseLazyLoadingProxies().UseSqlServer(connectionString);
           }
         });
-      services.AddCors(options => {
-        options.AddPolicy(ALLOW_SPECIFIC_ORIGINS, builder => {
-          builder.WithOrigins("https://localhost:5011");
-        });
-      });
+      // services.AddCors(options => {
+      //   options.AddPolicy(ALLOW_SPECIFIC_ORIGINS, builder => {
+      //     builder.WithOrigins("https://localhost:5011");
+      //   });
+      // });
 
       services.AddDatabaseDeveloperPageExceptionFilter();
       services.AddControllers().AddJsonOptions(x =>
@@ -101,7 +101,7 @@ namespace AspNetCoreAppRolesFineGrainedApi.Api
       app.UseHttpsRedirection();
 
       app.UseRouting();
-      app.UseCors(ALLOW_SPECIFIC_ORIGINS);
+      //app.UseCors(ALLOW_SPECIFIC_ORIGINS);
       app.UseAuthentication();
       app.UseAuthorization();
 
