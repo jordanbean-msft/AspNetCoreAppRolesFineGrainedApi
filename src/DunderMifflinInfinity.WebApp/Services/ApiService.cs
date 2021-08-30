@@ -57,7 +57,7 @@ namespace DunderMifflinInfinity.WebApp.Services
         {
             var jsonRequest = JsonConvert.SerializeObject(obj);
             var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-            var response = await ExecuteApi(HttpMethod.Post, $"/api/${apiEndpoint}", jsoncontent);
+            var response = await ExecuteApi(HttpMethod.Post, $"/api/{apiEndpoint}", jsoncontent);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -86,7 +86,7 @@ namespace DunderMifflinInfinity.WebApp.Services
         {
             var jsonRequest = JsonConvert.SerializeObject(obj);
             var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-            var response = await ExecuteApi(HttpMethod.Put, $"/api/${apiEndpoint}/{editPropertyAccessor(obj)}", jsoncontent);
+            var response = await ExecuteApi(HttpMethod.Put, $"/api/{apiEndpoint}/{editPropertyAccessor(obj)}", jsoncontent);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -101,7 +101,7 @@ namespace DunderMifflinInfinity.WebApp.Services
 
         public async Task<IEnumerable<T>> GetAsync()
         {
-            var response = await ExecuteApi(HttpMethod.Get, $"api/${apiEndpoint}");
+            var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}");
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -115,7 +115,7 @@ namespace DunderMifflinInfinity.WebApp.Services
 
         public async Task<T> GetAsync(int id)
         {
-            var response = await ExecuteApi(HttpMethod.Get, $"/api/${apiEndpoint}/{id}");
+            var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}/{id}");
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var content = await response.Content.ReadAsStringAsync();

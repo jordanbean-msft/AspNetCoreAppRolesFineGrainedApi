@@ -12,6 +12,7 @@ using DunderMifflinInfinity.WebApp.AuthorizationHandlers;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using DunderMifflinInfinity.WebApp.Services;
+using System.Threading.Tasks;
 
 namespace DunderMifflinInfinity.WebApp
 {
@@ -38,6 +39,13 @@ namespace DunderMifflinInfinity.WebApp
           Configuration.Bind("AzureAd", options);
           options.GetClaimsFromUserInfoEndpoint = true;
           options.TokenValidationParameters.RoleClaimType = "roles";
+          options.Events = new OpenIdConnectEvents {
+            OnAccessDenied = context => {
+              context.Response.Redirect("/");
+              context.HandleResponse();
+              return Task.FromResult(0);
+            }
+          };
         }, options =>
         {
           Configuration.Bind("AzureAD", options);
