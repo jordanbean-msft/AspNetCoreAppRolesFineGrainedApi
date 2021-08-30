@@ -46,7 +46,7 @@ namespace DunderMifflinInfinity.Api.Api
       {
         Configuration.Bind("AzureAD", options);
       });
-      services.AddDbContext<AspNetCoreAppRolesFineGrainedApiDbContext>(options =>
+      services.AddDbContext<DunderMifflinInfinityDbContext>(options =>
         {
           var connectionString = Configuration.GetConnectionString("sqlDatabaseConnectionString");
 

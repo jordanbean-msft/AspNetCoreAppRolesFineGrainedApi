@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DunderMifflinInfinity.Api.Migrations
 {
-    [DbContext(typeof(AspNetCoreAppRolesFineGrainedApiDbContext))]
-    partial class AspNetCoreAppRolesFineGrainedApiDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DunderMifflinInfinityDbContext))]
+    partial class DunderMifflinInfinityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -15,7 +15,7 @@ namespace DunderMifflinInfinity.Api.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.8");
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Branch", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Branch", b =>
                 {
                     b.Property<int>("BranchID")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,7 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.ToTable("Branch");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Employee", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeID")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Salary", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Salary", b =>
                 {
                     b.Property<int>("SalaryID")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.ToTable("Salary");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Sale", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Sale", b =>
                 {
                     b.Property<int>("SaleID")
                         .ValueGeneratedOnAdd()
@@ -99,9 +99,9 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.ToTable("Sale");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Employee", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Employee", b =>
                 {
-                    b.HasOne("AspNetCoreAppRolesFineGrainedApi.Models.Branch", "Branch")
+                    b.HasOne("DunderMifflinInfinity.Api.Models.Branch", "Branch")
                         .WithMany("Employees")
                         .HasForeignKey("BranchID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -110,20 +110,20 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Salary", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Salary", b =>
                 {
-                    b.HasOne("AspNetCoreAppRolesFineGrainedApi.Models.Employee", "Employee")
+                    b.HasOne("DunderMifflinInfinity.Api.Models.Employee", "Employee")
                         .WithOne("Salary")
-                        .HasForeignKey("AspNetCoreAppRolesFineGrainedApi.Models.Salary", "EmployeeID")
+                        .HasForeignKey("DunderMifflinInfinity.Api.Models.Salary", "EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Sale", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Sale", b =>
                 {
-                    b.HasOne("AspNetCoreAppRolesFineGrainedApi.Models.Employee", "Employee")
+                    b.HasOne("DunderMifflinInfinity.Api.Models.Employee", "Employee")
                         .WithMany("Sales")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -132,12 +132,12 @@ namespace DunderMifflinInfinity.Api.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Branch", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Branch", b =>
                 {
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("AspNetCoreAppRolesFineGrainedApi.Models.Employee", b =>
+            modelBuilder.Entity("DunderMifflinInfinity.Api.Models.Employee", b =>
                 {
                     b.Navigation("Salary");
 

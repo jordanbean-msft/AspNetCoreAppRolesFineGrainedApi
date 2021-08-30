@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflinInfinity.WebApp", "DunderMifflinInfinity.WebApp\DunderMifflinInfinity.WebApp.csproj", "{1475BD2A-7817-445C-A417-42909B75F9F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreAppRolesFineGrainedApi.Tests", "AspNetCoreAppRolesFineGrainedApi.Tests\AspNetCoreAppRolesFineGrainedApi.Tests.csproj", "{74C27929-14DF-4F48-8F99-958FA79BA4F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflinInfinity.WebApp.Tests", "DunderMifflinInfinity.WebApp.Tests\DunderMifflinInfinity.WebApp.Tests.csproj", "{74C27929-14DF-4F48-8F99-958FA79BA4F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflinInfinity.Api.Tests", "DunderMifflinInfinity.Api.Tests\DunderMifflinInfinity.Api.Tests.csproj", "{60e55d3f-0791-4a2d-b9aa-c3f35fe2c3a1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflinInfinity.Api", "DunderMifflinInfinity.Api\DunderMifflinInfinity.Api.csproj", "{79FF8716-D8A3-47EA-B728-2391CAC1DF90}"
 EndProject

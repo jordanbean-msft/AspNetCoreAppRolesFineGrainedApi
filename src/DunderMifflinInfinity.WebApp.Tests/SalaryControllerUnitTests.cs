@@ -2,22 +2,22 @@ using System;
 using Xunit;
 using System.Security.Principal;
 using System.Security.Claims;
-using DunderMifflinInfinity.Api.Controllers;
+using DunderMifflinInfinity.WebApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using DunderMifflinInfinity.Api.Data;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using DunderMifflinInfinity.Api.Models;
+using DunderMifflinInfinity.WebApp.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using DunderMifflinInfinity.Api.AuthorizationHandlers;
+using DunderMifflinInfinity.WebApp.AuthorizationHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using DunderMifflinInfinity.WebApp.Services;
 
-namespace DunderMifflinInfinity.Api.Tests
+namespace DunderMifflinInfinity.WebApp.Tests
 {
   public class SalaryControllerUnitTests
   {
@@ -27,20 +27,17 @@ namespace DunderMifflinInfinity.Api.Tests
     protected ClaimsPrincipal cfoUser;
     protected SalariesController salaryController;
 
-    protected DbConnection connection;
-    protected DbContextOptions<AspNetCoreAppRolesFineGrainedApiDbContext> contextOptions;
-
+    protected IBranchApiService branchApiService;
+    protected IEmployeeApiService employeeApiService;
+    protected ISalaryApiService salaryApiService;
+    protected ISaleApiService saleApiService;
     protected IAuthorizationService salaryAuthorizationService;
 
     public SalaryControllerUnitTests()
     {
       SetupUsers();
 
-      contextOptions = new DbContextOptionsBuilder<AspNetCoreAppRolesFineGrainedApiDbContext>()
-            .UseSqlite(CreateInMemoryDatabase())
-            .Options;
-
-      connection = RelationalOptionsExtension.Extract(contextOptions).Connection;
+      //branchApiService = new BranchApiService()
 
       SeedDatabase();
 

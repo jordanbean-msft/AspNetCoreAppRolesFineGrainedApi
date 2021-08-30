@@ -16,9 +16,9 @@ namespace DunderMifflinInfinity.Api.Controllers
     [RequiredScope(RequiredScopesConfigurationKey = "ApiScopes:DefaultScope")]
     public class BranchesController : ControllerBase
     {
-        private readonly AspNetCoreAppRolesFineGrainedApiDbContext _context;
+        private readonly DunderMifflinInfinityDbContext _context;
 
-        public BranchesController(AspNetCoreAppRolesFineGrainedApiDbContext context)
+        public BranchesController(DunderMifflinInfinityDbContext context)
         {
             _context = context;
         }

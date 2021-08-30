@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DunderMifflinInfinity.Api.Data {
   public static class DbInitializer {
-    public static void Initialize(AspNetCoreAppRolesFineGrainedApiDbContext context) {
+    public static void Initialize(DunderMifflinInfinityDbContext context) {
       context.Database.EnsureCreated();
 
       if(context.Branches.Any()) {

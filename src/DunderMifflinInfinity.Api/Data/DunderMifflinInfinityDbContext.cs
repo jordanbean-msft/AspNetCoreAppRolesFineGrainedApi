@@ -2,8 +2,8 @@ using DunderMifflinInfinity.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DunderMifflinInfinity.Api.Data {
-  public class AspNetCoreAppRolesFineGrainedApiDbContext : DbContext {
-    public AspNetCoreAppRolesFineGrainedApiDbContext(DbContextOptions<AspNetCoreAppRolesFineGrainedApiDbContext> options) : base(options) {
+  public class DunderMifflinInfinityDbContext : DbContext {
+    public DunderMifflinInfinityDbContext(DbContextOptions<DunderMifflinInfinityDbContext> options) : base(options) {
 
     }
 

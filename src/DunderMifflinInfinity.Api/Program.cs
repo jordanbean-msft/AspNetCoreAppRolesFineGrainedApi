@@ -27,7 +27,7 @@ namespace DunderMifflinInfinity.Api.Api
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<AspNetCoreAppRolesFineGrainedApiDbContext>();
+                    var context = services.GetRequiredService<DunderMifflinInfinityDbContext>();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)

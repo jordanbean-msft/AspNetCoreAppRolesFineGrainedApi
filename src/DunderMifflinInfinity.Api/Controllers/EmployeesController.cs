@@ -16,9 +16,9 @@ namespace DunderMifflinInfinity.Api.Controllers
     [RequiredScope(RequiredScopesConfigurationKey = "ApiScopes:DefaultScope")]
     public class EmployeesController : ControllerBase
     {
-        private readonly AspNetCoreAppRolesFineGrainedApiDbContext _context;
+        private readonly DunderMifflinInfinityDbContext _context;
 
-        public EmployeesController(AspNetCoreAppRolesFineGrainedApiDbContext context)
+        public EmployeesController(DunderMifflinInfinityDbContext context)
         {
             _context = context;
         }

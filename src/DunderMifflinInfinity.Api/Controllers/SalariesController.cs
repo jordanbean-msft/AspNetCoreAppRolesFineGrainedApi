@@ -20,9 +20,9 @@ namespace DunderMifflinInfinity.Api.Controllers
   public class SalariesController : ControllerBase
   {
     private readonly IAuthorizationService _authorizationService;
-    private readonly AspNetCoreAppRolesFineGrainedApiDbContext _context;
+    private readonly DunderMifflinInfinityDbContext _context;
 
-    public SalariesController(IAuthorizationService authorizationService, AspNetCoreAppRolesFineGrainedApiDbContext context)
+    public SalariesController(IAuthorizationService authorizationService, DunderMifflinInfinityDbContext context)
     {
       _authorizationService = authorizationService;
       _context = context;

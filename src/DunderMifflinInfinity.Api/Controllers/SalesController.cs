@@ -16,9 +16,9 @@ namespace DunderMifflinInfinity.Api.Controllers
     [RequiredScope(RequiredScopesConfigurationKey = "ApiScopes:SaleScope")]
     public class SalesController : ControllerBase
     {
-        private readonly AspNetCoreAppRolesFineGrainedApiDbContext _context;
+        private readonly DunderMifflinInfinityDbContext _context;
 
-        public SalesController(AspNetCoreAppRolesFineGrainedApiDbContext context)
+        public SalesController(DunderMifflinInfinityDbContext context)
         {
             _context = context;
         }
