@@ -232,7 +232,7 @@ For the **BranchManagerCanOnlyModifyOwnBranchSalariesRequirement**, we need to c
 
 ![salaryAuthorizationHandlerOnlyManagementCanModifySalaries](.img/salaryAuthorizationHandlerOnlyManagementCanModifySalaries.png)
 
-### Controller
+### API Controllers
 
 **Index**
 
@@ -245,6 +245,38 @@ In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, i
 In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
 
 ![editSalary](.img/editSalary.png)
+
+### Web App Controllers
+
+The Web App controllers delegate accessing the web API to some helper Services (`src/DunderMifflinInfinity.WebApp/Services`) that get an access token when needed. 
+
+```csharp
+private async Task PrepareAuthenticatedClient()
+{
+  var accessToken = await tokenAcquisition.GetAccessTokenForUserAsync(new[] { scope });
+  httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+  httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+}
+
+private async Task<HttpResponseMessage> ExecuteApi(HttpMethod httpMethod, string apiEndpoint, StringContent? jsonContent = null)
+{
+  await PrepareAuthenticatedClient();
+  HttpRequestMessage httpRequestMessage = new HttpRequestMessage(httpMethod, apiBaseAddress + apiEndpoint){
+    Content = jsonContent
+  };
+
+  return await httpClient.SendAsync(httpRequestMessage);
+}
+```
+
+These services are registered in the `src/DunderMifflinInfinity.WebApp/Startup.cs` file.
+
+```csharp
+services.AddHttpClient<IBranchApiService, BranchApiService>();
+services.AddHttpClient<IEmployeeApiService, EmployeeApiService>();
+services.AddHttpClient<ISalaryApiService, SalaryApiService>();
+services.AddHttpClient<ISaleApiService, SaleApiService>();
+```
 
 ### Views
 

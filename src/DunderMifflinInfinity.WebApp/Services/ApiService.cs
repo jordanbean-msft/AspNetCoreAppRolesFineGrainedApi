@@ -46,7 +46,8 @@ namespace DunderMifflinInfinity.WebApp.Services
     private async Task<HttpResponseMessage> ExecuteApi(HttpMethod httpMethod, string apiEndpoint, StringContent? jsonContent = null)
     {
       await PrepareAuthenticatedClient();
-      HttpRequestMessage httpRequestMessage = new HttpRequestMessage(httpMethod, apiBaseAddress + apiEndpoint){
+      HttpRequestMessage httpRequestMessage = new HttpRequestMessage(httpMethod, apiBaseAddress + apiEndpoint)
+      {
         Content = jsonContent
       };
 
@@ -54,77 +55,77 @@ namespace DunderMifflinInfinity.WebApp.Services
     }
 
     public async Task<T> AddAsync(T obj)
-        {
-            var jsonRequest = JsonConvert.SerializeObject(obj);
-            var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-            var response = await ExecuteApi(HttpMethod.Post, $"/api/{apiEndpoint}", jsoncontent);
+    {
+      var jsonRequest = JsonConvert.SerializeObject(obj);
+      var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+      var response = await ExecuteApi(HttpMethod.Post, $"/api/{apiEndpoint}", jsoncontent);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                obj = JsonConvert.DeserializeObject<T>(content);
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        var content = await response.Content.ReadAsStringAsync();
+        obj = JsonConvert.DeserializeObject<T>(content);
 
-                return obj;
-            }
+        return obj;
+      }
 
-            throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
-        }
+      throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
+    }
 
-        public async Task DeleteAsync(int id)
-        {
-            var response = await ExecuteApi(HttpMethod.Delete, $"/api/${apiEndpoint}/{id}");
+    public async Task DeleteAsync(int id)
+    {
+      var response = await ExecuteApi(HttpMethod.Delete, $"/api/${apiEndpoint}/{id}");
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                return;
-            }
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        return;
+      }
 
-            throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
-        }
+      throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
+    }
 
-        public async Task<T> EditAsync(T obj)
-        {
-            var jsonRequest = JsonConvert.SerializeObject(obj);
-            var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-            var response = await ExecuteApi(HttpMethod.Put, $"/api/{apiEndpoint}/{editPropertyAccessor(obj)}", jsoncontent);
+    public async Task<T> EditAsync(T obj)
+    {
+      var jsonRequest = JsonConvert.SerializeObject(obj);
+      var jsoncontent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+      var response = await ExecuteApi(HttpMethod.Put, $"/api/{apiEndpoint}/{editPropertyAccessor(obj)}", jsoncontent);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                obj = JsonConvert.DeserializeObject<T>(content);
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        var content = await response.Content.ReadAsStringAsync();
+        obj = JsonConvert.DeserializeObject<T>(content);
 
-                return obj;
-            }
+        return obj;
+      }
 
-            throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
-        }
+      throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
+    }
 
-        public async Task<IEnumerable<T>> GetAsync()
-        {
-            var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}");
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                IEnumerable<T> sale = JsonConvert.DeserializeObject<IEnumerable<T>>(content);
+    public async Task<IEnumerable<T>> GetAsync()
+    {
+      var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}");
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        var content = await response.Content.ReadAsStringAsync();
+        IEnumerable<T> sale = JsonConvert.DeserializeObject<IEnumerable<T>>(content);
 
-                return sale;
-            }
+        return sale;
+      }
 
-            throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
-        }
+      throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
+    }
 
-        public async Task<T> GetAsync(int id)
-        {
-            var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}/{id}");
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                T sale = JsonConvert.DeserializeObject<T>(content);
+    public async Task<T> GetAsync(int id)
+    {
+      var response = await ExecuteApi(HttpMethod.Get, $"/api/{apiEndpoint}/{id}");
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        var content = await response.Content.ReadAsStringAsync();
+        T sale = JsonConvert.DeserializeObject<T>(content);
 
-                return sale;
-            }
+        return sale;
+      }
 
-            throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
-        }
+      throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
+    }
   }
 }
