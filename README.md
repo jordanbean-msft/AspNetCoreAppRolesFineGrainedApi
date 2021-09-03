@@ -74,7 +74,7 @@ To use this example, you will need to configure 2 Azure Active Directory App Reg
     1. Fill out the other data as needed
     1. Click **Save**
 
-    Repeat these steps and create a **Sales.ReadWrite** scope & a **Default.ReadWrite** scope. You should require admin consent for the **Sales.ReadWrite** scope, but you can leave the **Who can consent** flag set to **Admins and users** for the **Default.ReadWrite** scope.
+    Repeat these steps and create a **Sale.ReadWrite** scope & a **Default.ReadWrite** scope. You should require admin consent for the **Sale.ReadWrite** scope, but you can leave the **Who can consent** flag set to **Admins and users** for the **Default.ReadWrite** scope.
 
 1.  On the **App roles** blade, create 4 roles (click on **Create app role**).
 
@@ -146,6 +146,17 @@ Becuase this is sensitive data (salaries, sales data, etc), we don't want to all
 ## Web app configuration
 
 1.  In the `src/DunderMifflinInfinity.WebApp/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
+
+    Don't forget the API scopes you exposed in the web API app registration (your GUID will be different).
+
+    ```json
+    "DunderMifflinInfinity.Api": {
+    "ApiBaseAddress": "https://localhost:5001",
+    "DefaultScope": "api://09e2d303-1ad0-43f9-8d34-dcd8dc5fb4ea/Default.ReadWrite",
+    "SalaryScope": "api://09e2d303-1ad0-43f9-8d34-dcd8dc5fb4ea/Salary.ReadWrite",
+    "SaleScope": "api://09e2d303-1ad0-43f9-8d34-dcd8dc5fb4ea/Sale.ReadWrite"
+    }
+    ```
 
 ## Run locally
 
@@ -232,17 +243,19 @@ For the **BranchManagerCanOnlyModifyOwnBranchSalariesRequirement**, we need to c
 
 ![salaryAuthorizationHandlerOnlyManagementCanModifySalaries](.img/salaryAuthorizationHandlerOnlyManagementCanModifySalaries.png)
 
+>Note: In this case, the same policies are applied to both the web API & the web app. This means you could abstract out the `AuthorizationHandlers` into a separate library that both projects depend on. However, there are likely to be differences in a real-world application, so they are copied in this case so you have the ability to customize as needed.
+
 ### API Controllers
 
-**Index**
+**Get**
 
-In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
+In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, we use two attributes. For the entire controller, we use the **RequiredScope** to ensure only users have the **Salary.ReadWrite** scope in their token before continuing. Then in the **GetSalaries** method, we use the **Policies.General** policy because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
 
 ![getSalaries](.img/getSalaries.png)
 
-**Edit**
+**Put**
 
-In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
+In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **PutSalary** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
 
 ![editSalary](.img/editSalary.png)
 
@@ -268,6 +281,14 @@ private async Task<HttpResponseMessage> ExecuteApi(HttpMethod httpMethod, string
   return await httpClient.SendAsync(httpRequestMessage);
 }
 ```
+
+When the application runs and tries to access the backend API for Salary data, an access token is procured for the **Salary.ReadWrite** scope.
+
+![requiredScope](.img/requiredScope.png)
+
+The access token contains all the information we need to decide if the user should be allowed to modify the data. Notice that we have the **aud** (audience, the backend API app ID), the **groups** the user is a part of (that are related to this app), the **app roles** the user is a part of, the **Salary.ReadWrite** scope & the **upn** (user principal name) uniquely identifying the user.
+
+![accessToken](.img/accessToken.png)
 
 These services are registered in the `src/DunderMifflinInfinity.WebApp/Startup.cs` file.
 
