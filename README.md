@@ -19,9 +19,9 @@ In this example, there are 2 branches of the company & a corporate office. The f
 - The regional manager of a branch should be able to read & write all salary data for their branch only
 - The CFO should be able to read & write all salary data for all employees (except themselves, of course)
 
-## Azure Active Directory configuration
+## Azure Active Directory configuration for web API
 
-To use this example, you will need to configure an Azure Active Directory App Registration/Service Princpal & AAD groups.
+To use this example, you will need to configure 2 Azure Active Directory App Registrations/Service Princpals & AAD groups. One for the backend API and one for the front-end web app.
 
 ### Create App Registration & configure
 
@@ -66,6 +66,16 @@ To use this example, you will need to configure an Azure Active Directory App Re
     - profile
     - User.Read
 
+1.  On the **Expose an API** page, define 3 scopes for your API to expose. This allows you to provide different levels of access to different front-end applications that might want different levels of data (for instance, a sales app that shows sales data & a HR app that shows salary data)
+
+    1. Click **Add a scope**
+    1. **Scope name** : **Salary.ReadWrite**
+    1. **Who can consent** : **Admins only**
+    1. Fill out the other data as needed
+    1. Click **Save**
+
+    Repeat these steps and create a **Sales.ReadWrite** scope & a **Default.ReadWrite** scope. You should require admin consent for the **Sales.ReadWrite** scope, but you can leave the **Who can consent** flag set to **Admins and users** for the **Default.ReadWrite** scope.
+
 1.  On the **App roles** blade, create 4 roles (click on **Create app role**).
 
     Display Name | Description | Allowed member types | Value
@@ -109,21 +119,49 @@ To use this example, you will need to configure an Azure Active Directory App Re
 
     ![groupRoleAssignment](.img/groupRoleAssignment.png)
 
+## Azure Active Directory configuration for web app
+
+The steps for configuring the App Registration & Service Principal for the web app are similar to the ones for the web API. You will need to add API permissions to your Web API & consent for them.
+
+1.  Under the **API permissions** blade, add permissions to your web API.
+
+    1.  Click **Add a permission**
+    1.  Select **My APIs**
+    1.  Select the app registration API
+    1.  Click **Delegated permissions**
+    1.  Select **Default.ReadWrite** & **Salary.ReadWrite**
+    1.  Click **Add permissions**
+    1.  Click **Grant admin consent for <tenant-name>**
+
+Becuase this is sensitive data (salaries, sales data, etc), we don't want to allow users to consent for themselves to expose this data to any app that might request them. Instead, we require **admin consent** so that we can control which apps get access to this data.
+
+![apiPermissions](.img/apiPermissions.png)
+
+## Web API configuration
+
+1.  In the `src/DunderMifflinInfinity.API/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
+
+1.  In the `src/DunderMifflinInfinity.API/Data/DbInitializer.cs` file, update the values to match your **app role names**, **group IDs** and **users**.
+
 ## Web app configuration
 
-1.  In the `src/AspNetCoreAppRolesFineGrainedApi/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
-
-1.  In the `src/Data/DbInitializer.cs` file, update the values to match your **app role names**, **group IDs** and **users**.
+1.  In the `src/DunderMifflinInfinity.WebApp/appsettings.json` file, update the **AzureAD** section with the AAD app registration values you copied to Notepad before.
 
 ## Run locally
 
-1.  Initialize the local Sqlite database. Make sure you are in the `src/AspNetCoreAppRolesFineGrainedApi` directory.
+1.  Initialize the local Sqlite database. Make sure you are in the `src/DunderMifflinInfinity.API` directory.
 
     ```shell
     dotnet ef database update
     ```
 
-1.  Run the application
+1.  Run the API
+
+    ```shell
+    dotnet watch run
+    ```
+
+1.  Run the application (in a separate shell)
 
     ```shell
     dotnet watch run
@@ -165,7 +203,7 @@ We don't want to have to constantly issue Graph API queries to find out informat
 
 ### Setup authorization service
 
-In the `src/AspNetCoreAppRolesFineGrainedApi/Startup.cs` file in the **ConfigureServices** method, we need to set up the authorization policies we want enforced.
+In the `src/DunderMifflinInfinity.API/Startup.cs` file in the **ConfigureServices** method, we need to set up the authorization policies we want enforced.
 
 ![startupConfigureServices](.img/startupConfigureServices.png)
 
@@ -176,7 +214,7 @@ Add a new `SalaryAuthorizationHandler` to the list of services.
 
 ### Authorization Service
 
-In the `src/AspNetCoreAppRolesFineGrainedApi/AuthorizationHandlers/SalaryAuthorizationHandler.cs` file, the **SalaryAuthorizationHandler** service is responsible for evaluating the list of requirements defined in the **Salary** policy.
+In the `src/DunderMifflinInfinity.API/AuthorizationHandlers/SalaryAuthorizationHandler.cs` file, the **SalaryAuthorizationHandler** service is responsible for evaluating the list of requirements defined in the **Salary** policy.
 
 It will loop through each requirement as defined in the `Startup.cs` file. For each requirement, a function will get called to evaluate it.
 
@@ -198,19 +236,19 @@ For the **BranchManagerCanOnlyModifyOwnBranchSalariesRequirement**, we need to c
 
 **Index**
 
-In the `src/AspNetCoreAppRolesFineGrainedApi/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
+In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **Index** method, we use the **Policies.General** because everyone can see **some** salary data, but it will change depending on their role. We use Entity Framework to only pull the appropriate data for each role.
 
 ![getSalaries](.img/getSalaries.png)
 
 **Edit**
 
-In the `src/AspNetCoreAppRolesFineGrainedApi/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
+In the `src/DunderMifflinInfinity.API/Controllers/SalariesController.cs` file, in the **Edit** method, we use the **_authorizationService** to evaluate if the signed-in user is allowed to modify the **Salary** object. If so, we make the database change, otherwise, we forbid it. This will call the **SalaryAuthorizationService** and loop through all requirements.
 
 ![editSalary](.img/editSalary.png)
 
 ### Views
 
-In the `src/AspNetCoreAppRolesFineGrainedApi/Views/Salaries/Index.cshtml` you can see that we hide the **Create new** button if the user is not a manager.
+In the `src/DunderMifflinInfinity.WebApp/Views/Salaries/Index.cshtml` you can see that we hide the **Create new** button if the user is not a manager.
 
 We also hide the **Edit** and **Delete** buttons if the user is not a manager & is not trying to modify their own salary.
 
@@ -218,7 +256,7 @@ We also hide the **Edit** and **Delete** buttons if the user is not a manager & 
 
 ## Tests
 
-Unit tests can be found in the `src/AspNetCoreAppRolesFineGrainedApi.Tests` directory. Run with the following command in that directory.
+Unit tests can be found in the `src/DunderMifflinInfinity.API.Tests` directory. Run with the following command in that directory.
 
 ```shell
 dotnet test
