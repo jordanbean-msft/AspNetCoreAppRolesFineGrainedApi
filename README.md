@@ -96,7 +96,7 @@ To use this example, you will need to configure 2 Azure Active Directory App Reg
     Name | Group Type | Membership Type
     ---- | ---------- | ---------------
     WebAppName_General | Security | Assigned
-    WebAppName_Scranton_Salespersion | Security | Assigned
+    WebAppName_Scranton_Salesperson | Security | Assigned
     WebAppName_Scranton_RegionalManager | Security | Assigned
     WebAppName_Stamford_Salesperson | Security | Assigned
     WebAppName_Stamford_RegionalManager | Security | Assigned
@@ -111,7 +111,7 @@ To use this example, you will need to configure 2 Azure Active Directory App Reg
     Display Name | Object Type | Role assigned
     ------------ | ----------- | -------------
     WebAppName_General | Group | General.ReadWrite
-    WebAppName_Scranton_Salespersion | Group | Salesperson.ReadWrite
+    WebAppName_Scranton_Salesperson | Group | Salesperson.ReadWrite
     WebAppName_Scranton_RegionalManager | Group | RegionalManager.ReadWrite
     WebAppName_Stamford_Salesperson | Group | Salesperson.ReadWrite
     WebAppName_Stamford_RegionalManager | Group | RegionalManager.ReadWrite
